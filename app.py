@@ -47,7 +47,7 @@ def get_custom():
   return "\n".join([" ".join([str(col) for col in result]) for result in results])
 
 @app.route("/custom", methods=["POST"])
-def add_presets():
+def add_custom():
   title = request.form.get("title")
   contents = request.form.get("contents")
   conn = psycopg2.connect(DATABASE_URL, sslmode='require')
