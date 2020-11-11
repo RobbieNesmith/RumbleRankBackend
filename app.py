@@ -22,7 +22,8 @@ def get_presets():
   results = cur.fetchall()
   cur.close()
   conn.close()
-  return "\n".join([" ".join([str(col) for col in result]) for result in results])
+  lists = [{"id": r[0], "title": r[1], "contents": r[2]} for r in results]
+  return jsonify(lists)
 
 @app.route("/presets", methods=["POST"])
 def add_presets():
@@ -44,7 +45,8 @@ def get_custom():
   results = cur.fetchall()
   cur.close()
   conn.close()
-  return "\n".join([" ".join([str(col) for col in result]) for result in results])
+  lists = [{"id": r[0], "title": r[1], "contents": r[2]} for r in results]
+  return jsonify(lists)
 
 @app.route("/custom", methods=["POST"])
 def add_custom():
