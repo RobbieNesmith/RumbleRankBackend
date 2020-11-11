@@ -18,7 +18,10 @@ def index():
 def get_presets():
   conn = psycopg2.connect(DATABASE_URL, sslmode='require')
   cur = conn.cursor()
-  cur.execute("SELECT * FROM presets;")
+  if "id" in request.args:
+    cur.execute("SELECT * FROM presets where id=%s;", (request.args.get("id"),))
+  else:
+    cur.execute("SELECT * FROM presets;")
   results = cur.fetchall()
   cur.close()
   conn.close()
@@ -41,7 +44,10 @@ def add_presets():
 def get_custom():
   conn = psycopg2.connect(DATABASE_URL, sslmode='require')
   cur = conn.cursor()
-  cur.execute("SELECT * FROM custom;")
+  if "id" in request.args:
+    cur.execute("SELECT * FROM custom where id=%s;", (request.args.get("id"),))
+  else:
+    cur.execute("SELECT * FROM custom;")
   results = cur.fetchall()
   cur.close()
   conn.close()
