@@ -34,11 +34,12 @@ def add_presets():
   contents = request.form.get("contents")
   conn = psycopg2.connect(DATABASE_URL, sslmode='require')
   cur = conn.cursor()
-  cur.execute("INSERT INTO presets (title, contents) VALUES (%s, %s);", (title, contents))
+  cur.execute("INSERT INTO presets (title, contents) VALUES (%s, %s) RETURNING id;", (title, contents))
+  id = cur.fetchone()[0]
   conn.commit()
   cur.close()
   conn.close()
-  return f"added {title} {contents}"
+  return jsonify({"id": id, "title": title, "contents": contents})
 
 @app.route("/custom", methods=["GET"])
 def get_custom():
@@ -60,8 +61,9 @@ def add_custom():
   contents = request.form.get("contents")
   conn = psycopg2.connect(DATABASE_URL, sslmode='require')
   cur = conn.cursor()
-  cur.execute("INSERT INTO custom (title, contents) VALUES (%s, %s);", (title, contents))
+  cur.execute("INSERT INTO custom (title, contents) VALUES (%s, %s) RETURNING id;", (title, contents))
+  id = cur.fetchone()[0]
   conn.commit()
   cur.close()
   conn.close()
-  return f"added {title} {contents}"
+  return jsonify({"id": id, "title": title, "contents": contents})
